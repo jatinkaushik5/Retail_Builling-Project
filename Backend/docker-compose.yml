@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: Retail_Billing
+      MYSQL_ROOT_PASSWORD: 7685
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: springboot-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_URL=jdbc:mysql://mysql-db:3306/Retail_Billing?useSSL=false&allowPublicKeyRetrieval=true
+      - DB_USER=root
+      - DB_PASSWORD=7685
+    env_file:
+      - .env
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ../Frontend
+      dockerfile: Dockerfile
+    container_name: retail-frontend
+    depends_on:
+      - backend-app
+    ports:
+      - "80:80"
+
+volumes:
+  mysql_data:
