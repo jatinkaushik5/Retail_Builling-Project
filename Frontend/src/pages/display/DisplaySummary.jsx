@@ -30,7 +30,7 @@ const DisplaySummary = () => {
         localStorage.setItem("paymentMethod","UPI")
   try {
     res = await api.post(
-      `http://localhost:8080/order/create-checkout-session?amount=${amount}`);
+      `/order/create-checkout-session?amount=${amount}`);
     
     const stripe = await stripePromise;
 

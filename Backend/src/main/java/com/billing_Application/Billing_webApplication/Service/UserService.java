@@ -7,7 +7,9 @@ import com.billing_Application.Billing_webApplication.io.Loginform;
 import com.billing_Application.Billing_webApplication.io.UserInfoResponse;
 import com.billing_Application.Billing_webApplication.io.UserRequest;
 import com.billing_Application.Billing_webApplication.io.UserResponse;
-import jakarta.servlet.http.Cookie;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import java.time.Duration;
 import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,11 +103,15 @@ public class UserService {
 
              UserEntity user=userRepository.getByEmail(userDetails.getUsername()).orElse(null);
              System.out.println(user);
-             Cookie cookie=new Cookie("token",token);
-             cookie.setHttpOnly(true);
-             cookie.setPath("/");
-             cookie.setSecure(false);
-             cookie.setMaxAge(4*60*60*24);
+             ResponseCookie cookie = ResponseCookie.from("token", token)
+        .httpOnly(true)
+        .secure(true)
+        .path("/")
+        .sameSite("None")
+        .maxAge(Duration.ofDays(4))
+        .build();
+
+response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
              response.addCookie(cookie);
 
