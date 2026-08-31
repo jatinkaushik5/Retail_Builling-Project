@@ -151,7 +151,7 @@ async function saveCart(){
      
   try {
     res = await api.post(
-    `http://localhost:8080/order/create-checkout-session?amount=${amount}&cartId=${newid}`)
+    `/order/create-checkout-session?amount=${amount}&cartId=${newid}`)
     
     const stripe = await stripePromise;
     console.log("response: ",res.data)

@@ -1,8 +1,7 @@
-import axios from "axios"
-import api from "../pages/axiosConfig";
+import api from "../axiosConfig";
 
 export const addCategory= async (Category)=>{
-    return await api.post("http://localhost:8080/admin/save",Category,
+    return await api.post("/admin/save",Category,
         {
         withCredentials:true
     }
@@ -10,7 +9,7 @@ export const addCategory= async (Category)=>{
 }
 
 export const deleteCategory=async (id)=>{
-    return await api.delete(`http://localhost:8080/admin/delete/${id}`,
+    return await api.delete(`/admin/delete/${id}`,
         {
         withCredentials:true
     }
@@ -18,13 +17,13 @@ export const deleteCategory=async (id)=>{
 }
 
 export const fetchCategory=async ()=>{
-    return await api.get("http://localhost:8080/category/getall",{
+    return await api.get("/category/getall",{
         withCredentials:true
     });
 }
 
 export const loginUser=async (user)=>{
-    return await api.post("http://localhost:8080/user/login",user,
+    return await api.post("/user/login",user,
         {
         withCredentials:true
     }
@@ -32,7 +31,7 @@ export const loginUser=async (user)=>{
 }
 
 export const addItem=async (item)=>{
-    return await api.post("http://localhost:8080/item/save",item,
+    return await api.post("/item/save",item,
         {
         withCredentials:true
     }
